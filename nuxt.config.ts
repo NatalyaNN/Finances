@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   app: {
     head: {
-      title: 'ToDoApp',
+      title: 'Finances',
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       ]
