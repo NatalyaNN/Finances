@@ -54,6 +54,7 @@ const columns = [
                <UButton icon="i-heroicons-minus" color="red" label="Расход" />
                <UButton icon="i-heroicons-arrow-path" variant="outline" label="Перевод" />
             </div>
+            <AddTransaction/>
 
             <!-- График (заглушка) -->
             <UCard class="mb-8">

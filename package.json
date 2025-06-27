@@ -17,6 +17,8 @@
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "@iconify-json/heroicons": "^1.2.2",
+    "@iconify-json/lucide": "^1.2.53",
     "@prisma/client": "^6.10.1",
     "i": "^0.3.7",
     "npm": "^11.4.2",
