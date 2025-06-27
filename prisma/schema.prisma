@@ -6,10 +6,61 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  // output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  password      String    // Хеш пароля (bcrypt)
+  name          String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  transactions  Transaction[]
+  categories    Category[]
+  accounts      Account[]
+}
+
+model Account {
+  id            Int       @id @default(autoincrement())
+  name          String
+  balance       Float     @default(0)
+  currency      String    @default("USD")
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id])
+  transactions  Transaction[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Category {
+  id            Int       @id @default(autoincrement())
+  name          String
+  type          String    // "income" (доход) или "expense" (расход)
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id])
+  transactions  Transaction[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Transaction {
+  id            Int       @id @default(autoincrement())
+  amount        Float
+  description   String?
+  type          String    // "income" или "expense"
+  date          DateTime  @default(now())
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id])
+  categoryId    Int
+  category      Category  @relation(fields: [categoryId], references: [id])
+  accountId     Int
+  account       Account   @relation(fields: [accountId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
