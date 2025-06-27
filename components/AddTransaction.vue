@@ -2,6 +2,7 @@
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 
+const isModalOpen = ref(false);
 const toast = useToast();
 
 const schema = z.object({
@@ -16,12 +17,10 @@ const state = reactive<Partial<Schema>>({
   category: undefined as string | undefined
 })
 
-const isModalOpen = ref(false);
-
 const newTransaction = ref({
   type: 'expense', // 'income' или 'expense'
   amount: 0,
-  category: '',
+  category: 1, // id категории
   date: new Date().toISOString().split('T')[0], // Сегодняшняя дата
   description: ''
 });
@@ -56,60 +55,65 @@ const submitTransaction = async (event: FormSubmitEvent<Schema>) => {
     toast.add({ title: 'Ошибка!', color: 'error' });
   }
 };
+
+const closeModal = () => {
+  isModalOpen.value = false;
+}
 </script>
 
 <template>
   <div>
     <!-- Модальное окно -->
-    <UModal class="modal" v-model="isModalOpen" :style="{ width: 'sm:max-w-md' }">
+    <UModal class="modal" v-model="isModalOpen">
       <!-- Кнопка открытия модалки -->
-      <UButton icon="i-heroicons-plus" label="Добавить транзакцию" @click="isModalOpen = true" />
+      <UButton icon="i-heroicons-plus" label="Добавить транзакцию" @click="isModalOpen = true" class="my-4" />
+
       <template #content>
-        <UCard>
+        <UCard class="pl-4">
           <!-- Заголовок и кнопка закрытия -->
           <div class="flex justify-between items-center">
             <h2 class="text-xl font-bold">Новая транзакция</h2>
-            <UButton color="neutral" variant="ghost" icon="i-heroicons-x-mark" @click="isModalOpen = false" />
+            <UButton color="neutral" variant="ghost" icon="i-heroicons-x-mark" @click="closeModal" class="px-3" />
           </div>
 
 
           <!-- Форма -->
-          <UForm :state="state" @submit="submitTransaction">
+          <UForm :state="state" @submit="submitTransaction" class="block">
             <!-- Тип транзакции (доход/расход) -->
-            <UFormGroup label="Тип" name="type" class="mb-4">
-              <URadioGroup v-model="newTransaction.type" :options="[
+            <UFormField label="Тип" name="type" class="mb-4">
+              <URadioGroup v-model="newTransaction.type" :items="[
                 { value: 'income', label: 'Доход' },
                 { value: 'expense', label: 'Расход' }
               ]" />
-            </UFormGroup>
+            </UFormField>
 
             <!-- Категория -->
-            <UFormGroup label="Категория" name="category" class="mb-4">
+            <UFormField label="Категория" name="category" class="mb-4">
               <USelect v-model="newTransaction.category"
-                :options="filteredCategories.map(cat => ({ value: cat.id, label: cat.name }))"
-                placeholder="Выберите категорию" />
-            </UFormGroup>
+                :items="filteredCategories.map(cat => ({ value: cat.id, label: cat.name }))"
+                placeholder="Выберите категорию" class="w-80" />
+            </UFormField>
 
             <!-- Сумма -->
-            <UFormGroup label="Сумма" name="amount" class="mb-4">
+            <UFormField label="Сумма" name="amount" class="mb-4">
               <UInput v-model.number="newTransaction.amount" type="number" placeholder="0"
-                :rules="[(val: number) => val > 0 || 'Сумма должна быть положительной']"
-                icon="i-lucide-russian-ruble" />
-            </UFormGroup>
+                :rules="[(val: number) => val > 0 || 'Сумма должна быть положительной']" icon="i-lucide-russian-ruble"
+                class="w-80" />
+            </UFormField>
 
             <!-- Дата -->
-            <UFormGroup label="Дата" name="date" class="mb-4">
-              <UInput v-model="newTransaction.date" type="date" />
-            </UFormGroup>
+            <UFormField label="Дата" name="date" class="mb-4">
+              <UInput v-model="newTransaction.date" type="date" class="w-80" />
+            </UFormField>
 
             <!-- Описание -->
-            <UFormGroup label="Описание" name="description" class="mb-6">
-              <UTextarea v-model="newTransaction.description" placeholder="Комментарий" />
-            </UFormGroup>
+            <UFormField label="Описание" name="description" class="mb-6">
+              <UTextarea v-model="newTransaction.description" placeholder="Комментарий" class="w-80" />
+            </UFormField>
 
             <!-- Кнопки -->
             <div class="flex justify-end gap-3">
-              <UButton type="button" color="neutral" label="Отмена" @click="isModalOpen = false" />
+              <UButton type="button" color="neutral" label="Отмена" @click="closeModal" />
               <UButton type="submit" color="primary" label="Сохранить" />
             </div>
           </UForm>
