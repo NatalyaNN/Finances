@@ -51,7 +51,7 @@ model Category {
 
 model Transaction {
   id            Int       @id @default(autoincrement())
-  amount        Float
+  amount        Decimal   @db.Decimal(10, 2)
   description   String?
   type          String    // "income" или "expense"
   date          DateTime  @default(now())
