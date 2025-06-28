@@ -51,7 +51,9 @@ const submitTransaction = async (event: FormSubmitEvent<Schema>) => {
     toast.add({ title: 'Успешно!', color: 'success' });
     isModalOpen.value = false;
     refreshNuxtData(); // Обновляем список транзакций
-  } catch (error) {
+  } catch (error: any) {
+    console.log(error.message);
+    
     toast.add({ title: 'Ошибка!', color: 'error' });
   }
 };

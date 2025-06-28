@@ -1,5 +1,10 @@
+import { requireAuth } from "../utils/auth"
+import prisma from "../utils/prisma"
+
 export default defineEventHandler(async (event) => {
-   const { userId } = await requireAuth(event)
+   const { user } = await requireAuth(event)
+
+   const userId = user.id
 
    const [totalIncome, totalExpense] = await Promise.all([
       prisma.transaction.aggregate({

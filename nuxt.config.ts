@@ -26,5 +26,8 @@ export default defineNuxtConfig({
       }
     }
   },
+  runtimeConfig: {
+    jwtSecret: process.env.JWT_SECRET || 'your-very-secret-key'
+  },
   modules: ['@nuxt/ui'],
 })

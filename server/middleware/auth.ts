@@ -1,4 +1,4 @@
-import { requireAuth } from "../transactions/utils/auth"
+import { requireAuth } from "../utils/auth"
 
 export default defineEventHandler(async (event) => {
    // Пропускаем публичные маршруты
