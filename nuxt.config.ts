@@ -14,7 +14,7 @@ export default defineNuxtConfig({
   routeRules: {
     '/tasks/**': {
       ssr: false,
-      appMiddleware: 'auth'
+      // appMiddleware: 'auth'
     }
   },
   nitro: {
@@ -29,5 +29,14 @@ export default defineNuxtConfig({
   runtimeConfig: {
     jwtSecret: process.env.JWT_SECRET || 'your-very-secret-key'
   },
-  modules: ['@nuxt/ui'],
+  modules: [
+    '@nuxt/ui',
+    '@sidebase/nuxt-auth',
+  ],
+  auth: {
+    provider: {
+      type: 'authjs' // Используем Auth.js
+    },
+    baseUrl: process.env.AUTH_ORIGIN // Для корректных URL в production
+  }
 })

@@ -1,0 +1,45 @@
+import { NuxtAuthHandler } from '#auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
+
+export default NuxtAuthHandler({
+   secret: process.env.AUTH_SECRET,
+   providers: [
+      CredentialsProvider({
+         credentials: {
+            email: { label: 'Email', type: 'text' },
+            password: { label: 'Password', type: 'password' },
+         },
+         async authorize(credentials) {
+            const user = await prisma.user.findUnique({
+               where: { email: credentials?.email }
+            })
+
+            // if (user && await verifyPassword(credentials?.password, user.password)) {
+            //    return { id: user.id, email: user.email }
+            // }
+            return {
+               id: user?.id.toString(),
+               email: user?.email,
+               name: user?.name
+             }
+         }
+      })
+   ],
+   callbacks: {
+      jwt({ token, user }) {
+         if (user) {
+            token.id = user.id
+         }
+         return token
+      },
+      session({ session, token }) {
+         if (session.user && token.sub) {
+            session.user.id = parseInt(token.sub || token.id)
+         }
+         return session
+      }
+    }
+})

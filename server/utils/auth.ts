@@ -1,3 +1,4 @@
+/*
 import { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from './constants'
@@ -39,5 +40,27 @@ export const requireAuth = async (event: any) => {
          statusCode: 401,
          statusMessage: 'Недействительный токен'
       })
+   }
+}
+*/
+
+import { H3Event } from 'h3'
+import { getServerSession } from '#auth'
+import Session from "~/types/auth";
+
+export async function requireAuth(event: H3Event) {
+   const session = await Session(event)
+
+   if (!session?.user?.id) {
+      throw createError({
+         statusCode: 401,
+         statusMessage: 'Unauthorized',
+         message: 'Требуется авторизация'
+      })
+   }
+
+   return {
+      userId: session.user.id,
+      // session // Опционально, если нужен доступ к всей сессии
    }
 }

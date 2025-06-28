@@ -24,6 +24,7 @@ model User {
   transactions  Transaction[]
   categories    Category[]
   accounts      Account[]
+  sessions      Session[]
 }
 
 model Account {
@@ -66,4 +67,11 @@ model Transaction {
 
   @@index([date])
   @@index([type])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id])
+  expiresAt    DateTime
 }

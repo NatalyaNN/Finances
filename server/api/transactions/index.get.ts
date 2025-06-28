@@ -1,6 +1,12 @@
-import { requireAuth } from "../utils/auth"
-import prisma from "../utils/prisma"
+import { requireAuth } from "../../utils/auth"
+import prisma from "../../utils/prisma"
 
+export default defineEventHandler(async (event) => {
+   const { userId } = await requireAuth(event)
+   return await prisma.transaction.findMany({ where: { userId } })
+})
+
+/*
 export default defineEventHandler(async (event) => {
    const { user } = await requireAuth(event)
 
@@ -14,3 +20,4 @@ export default defineEventHandler(async (event) => {
 
    return transactions
 })
+*/

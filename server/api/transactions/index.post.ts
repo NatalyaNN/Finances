@@ -1,6 +1,6 @@
 import * as z from "zod/v4";
-import { requireAuth } from "../utils/auth"
-import prisma from "../utils/prisma"
+import { requireAuth } from "../../utils/auth"
+import prisma from "../../utils/prisma"
 
 export default defineEventHandler(async (event) => {
    const { user } = await requireAuth(event)
