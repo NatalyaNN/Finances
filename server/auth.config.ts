@@ -35,11 +35,36 @@ export default NuxtAuthHandler({
       //    }
       //    return token
       // },
-      session({ session, token }) {
-         if (session.user && token.sub) {
-            session.user.id = parseInt(token.sub || token.id)
+      jwt({ token, account, profile }) {
+         if (account) {
+            token.sessionToken = account.session_token
          }
-         return session
-      }
+         return token
+       },
+      // session({ session, token }) {
+      //    if (session.user && token.sub) {
+      //       session.user.id = parseInt(token.sub || token.id)
+      //    }
+      //    return session
+      // }
+      async session({ session, token }) {
+         // Token we injected into the JWT callback above.
+         const newToken = token.sessionToken
+
+         // Fetch data OR add previous data from the JWT callback.
+         const additionalUserData = await $fetch(`/api/session/${newToken}`)
+
+         // Return the modified session
+         return {
+            ...session,
+            user: {
+               id: additionalUserData.id,
+               name: additionalUserData.name,
+               email: additionalUserData.name,
+               // avatar: additionalUserData.avatar,
+               // role: additionalUserData.role
+            }
+         }
+       },
     }
 })

@@ -33,7 +33,7 @@ export default defineNuxtConfig({
     },
     public: {
       authJs: {
-        baseUrl: process.env.AUTH_ORIGIN
+        baseUrl: process.env.AUTH_ORIGIN || 'http://localhost:3000'
       },
     },
   },
@@ -50,13 +50,13 @@ export default defineNuxtConfig({
   auth: {
     provider: {
       type: 'authjs', // Используем Auth.js
-      // endpoints: {
-      //   signIn: '/api/auth/signin',
-      //   signOut: '/api/auth/signout',
-      //   getSession: '/api/auth/session'
-      // },
+      endpoints: {
+        signIn: '/api/auth/signin',
+        signOut: '/api/auth/signout',
+        getSession: '/api/auth/session'
+      },
     },
     // baseUrl: process.env.AUTH_ORIGIN // Для корректных URL в production
-    // baseURL: '/api/auth',
+    baseURL: '/api/auth',
   },
 })
