@@ -2,7 +2,7 @@ import { DefaultSession } from '@auth/core/types'
 // import { DefaultSession } from "#auth";
 
 declare module '@auth/core/types' {
-   interface Session {
+   interface Session extends DefaultSession {
       user?: {
          id: string | number
       } & DefaultSession['user']
@@ -12,9 +12,9 @@ declare module '@auth/core/types' {
 declare module '#auth' {
    interface Session extends DefaultSession {
       user?: {
-         id: number
+         id: string | number
       } & DefaultSession['user']
    }
 }
 
-export default Session
+// export default Session

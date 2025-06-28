@@ -1,25 +1,41 @@
-<script setup>
-const { signIn, signOut, session } = useAuth()
-const email = ref('')
-const password = ref('')
+<script setup lang=ts>
+import * as z from 'zod'
+import type { FormSubmitEvent } from '@nuxt/ui'
 
-const handleLogin = async () => {
-  await signIn('credentials', {
-    email: email.value,
-    password: password.value,
-    callbackUrl: '/'
-  })
+const toast = useToast();
+
+const schema = z.object({
+  email: z.string().email('Invalid email'),
+  password: z.string().min(8, 'Must be at least 8 characters')
+})
+
+type Schema = z.output<typeof schema>
+
+const state = reactive<Partial<Schema>>({
+  email: undefined,
+  password: undefined
+})
+
+
+async function onSubmit(event: FormSubmitEvent<Schema>) {
+  toast.add({ title: 'Success', description: 'The form has been submitted.', color: 'success' })
+  console.log(event.data)
 }
 </script>
 
 <template>
-  <UForm @submit="handleLogin">
-    <UFormField label="Email">
-      <UInput v-model="email" type="email" />
+  <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+    <UFormField label="Email" name="email">
+      <UInput v-model="state.email" />
     </UFormField>
-    <UFormField label="Password">
-      <UInput v-model="password" type="password" />
+
+    <UFormField label="Password" name="password">
+      <UInput v-model="state.password" type="password" />
     </UFormField>
-    <UButton type="submit">Войти</UButton>
+
+    <UButton type="submit">
+      Submit
+    </UButton>
   </UForm>
 </template>
+

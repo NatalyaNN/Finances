@@ -27,7 +27,15 @@ export default defineNuxtConfig({
     }
   },
   runtimeConfig: {
-    jwtSecret: process.env.JWT_SECRET || 'your-very-secret-key'
+    // jwtSecret: process.env.JWT_SECRET || 'your-very-secret-key',
+    authJs: {
+      secret: process.env.AUTH_SECRET,
+    },
+    public: {
+      authJs: {
+        baseUrl: process.env.AUTH_ORIGIN
+      },
+    },
   },
   typescript: {
     includeWorkspace: true,
@@ -41,8 +49,14 @@ export default defineNuxtConfig({
   ],
   auth: {
     provider: {
-      type: 'authjs' // Используем Auth.js
+      type: 'authjs', // Используем Auth.js
+      // endpoints: {
+      //   signIn: '/api/auth/signin',
+      //   signOut: '/api/auth/signout',
+      //   getSession: '/api/auth/session'
+      // },
     },
-    baseUrl: process.env.AUTH_ORIGIN // Для корректных URL в production
-  }
+    // baseUrl: process.env.AUTH_ORIGIN // Для корректных URL в production
+    // baseURL: '/api/auth',
+  },
 })

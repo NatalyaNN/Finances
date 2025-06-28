@@ -1,4 +1,5 @@
-// types/auth.d.ts
-interface Foo {
-   bar: string
+export module '#test' {
+   interface Foo {
+      bar: string
+   }
  }

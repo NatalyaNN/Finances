@@ -29,12 +29,12 @@ export default NuxtAuthHandler({
       })
    ],
    callbacks: {
-      jwt({ token, user }) {
-         if (user) {
-            token.id = user.id
-         }
-         return token
-      },
+      // jwt({ token, user }) {
+      //    if (user) {
+      //       token.id = user.id
+      //    }
+      //    return token
+      // },
       session({ session, token }) {
          if (session.user && token.sub) {
             session.user.id = parseInt(token.sub || token.id)

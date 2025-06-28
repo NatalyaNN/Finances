@@ -1,3 +1,4 @@
+<reference path="./types/auth.d.ts" />
 <template>
   <div>
     <NuxtRouteAnnouncer />
