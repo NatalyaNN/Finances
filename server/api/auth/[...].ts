@@ -1,10 +1,6 @@
 import { NuxtAuthHandler } from '#auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import prisma from '~/server/utils/prisma'
-/*
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
-*/
 
 export default NuxtAuthHandler({
    secret: process.env.AUTH_SECRET,
@@ -22,7 +18,7 @@ export default NuxtAuthHandler({
 
             if (!user) return null
 
-            // Проверка пароля (реализуйте свою логику)
+            // Проверка пароля
             const isValid = await comparePasswords(credentials?.password, user.password)
             if (!isValid) return null
 
@@ -50,7 +46,7 @@ export default NuxtAuthHandler({
    }
 })
 
-// Пример функции проверки пароля (замените на свою реализацию)
+// Пример функции проверки пароля
 async function comparePasswords(input: string | undefined, hashed: string) {
-   return input === hashed // В реальном приложении используйте bcrypt
+   return input === hashed //  bcrypt
 }

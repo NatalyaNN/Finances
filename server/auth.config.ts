@@ -52,7 +52,7 @@ export default NuxtAuthHandler({
          const newToken = token.sessionToken
 
          // Fetch data OR add previous data from the JWT callback.
-         const additionalUserData = await $fetch(`/api/session/${newToken}`)
+         const additionalUserData = await $fetch(`/api/auth/${newToken}`)
 
          // Return the modified session
          return {

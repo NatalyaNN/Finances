@@ -50,13 +50,17 @@ export default defineNuxtConfig({
   auth: {
     provider: {
       type: 'authjs', // Используем Auth.js
+      /*
       endpoints: {
         signIn: '/api/auth/signin',
         signOut: '/api/auth/signout',
         getSession: '/api/auth/session'
       },
+      */
     },
+    
     // baseUrl: process.env.AUTH_ORIGIN // Для корректных URL в production
     baseURL: '/api/auth',
+    // globalAppMiddleware: false, // Для теста
   },
 })
