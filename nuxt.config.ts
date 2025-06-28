@@ -11,5 +11,20 @@ export default defineNuxtConfig({
       ]
     }
   },
+  routeRules: {
+    '/tasks/**': {
+      ssr: false,
+      appMiddleware: 'auth'
+    }
+  },
+  nitro: {
+    preset: 'node-server',
+    routeRules: {
+      '/api/**': {
+        cors: true,
+        headers: { 'Access-Control-Allow-Credentials': 'true' }
+      }
+    }
+  },
   modules: ['@nuxt/ui'],
 })
