@@ -29,6 +29,12 @@ export default defineNuxtConfig({
   runtimeConfig: {
     jwtSecret: process.env.JWT_SECRET || 'your-very-secret-key'
   },
+  typescript: {
+    includeWorkspace: true,
+    tsConfig: {
+      include: ["types/*.d.ts"]
+    }
+  },
   modules: [
     '@nuxt/ui',
     '@sidebase/nuxt-auth',

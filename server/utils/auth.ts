@@ -46,10 +46,10 @@ export const requireAuth = async (event: any) => {
 
 import { H3Event } from 'h3'
 import { getServerSession } from '#auth'
-import Session from "~/types/auth";
+// import Session from "~/types/auth";
 
 export async function requireAuth(event: H3Event) {
-   const session = await Session(event)
+   const session = await getServerSession(event)
 
    if (!session?.user?.id) {
       throw createError({
@@ -58,6 +58,8 @@ export async function requireAuth(event: H3Event) {
          message: 'Требуется авторизация'
       })
    }
+
+   const foo: Foo = { bar: 'test' } // Должен автоматически подхватить тип
 
    return {
       userId: session.user.id,
