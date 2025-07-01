@@ -19,22 +19,22 @@ const state = reactive<Partial<Schema>>({
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   toast.add({ title: 'Success', description: 'The form has been submitted.', color: 'success' })
-  console.log(event.data)
+  // console.log(event.data)
 }
 </script>
 
 <template>
   <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-    <UFormField label="Email" name="email">
-      <UInput v-model="state.email" />
+    <UFormField label="Email" name="email" required>
+      <UInput v-model="state.email" type="email" autocomplete="username" />
     </UFormField>
 
-    <UFormField label="Password" name="password">
-      <UInput v-model="state.password" type="password" />
+    <UFormField label="Password" name="password" class="mt-4" required>
+      <UInput v-model="state.password" type="password" autocomplete="current-password" />
     </UFormField>
 
-    <UButton type="submit">
-      Submit
+    <UButton type="submit" class="mt-6" block>
+      Войти
     </UButton>
   </UForm>
 </template>
